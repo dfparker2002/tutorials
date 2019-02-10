@@ -1,7 +1,5 @@
 package org.baeldung.caching.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -10,11 +8,14 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 @Component
-@CacheConfig(cacheNames = { "addressDemo" })
+@CacheConfig(cacheNames = { "addresses" })
 public class CustomerDataService {
 
-    @Autowired
-    CacheManager cacheManager;
+    // this method configuration is equivalent to xml configuration
+    @Cacheable(value = "addresses", key = "#customer.name")
+    public String getAddress(final Customer customer) {
+        return customer.getAddress();
+    }
 
     /**
      * The method returns the customer's address,
